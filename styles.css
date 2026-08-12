@@ -151,6 +151,10 @@ body {
   margin: 5rem 0 0.75rem;
 }
 
+main > .eyebrow:first-child {
+  margin-top: 0;
+}
+
 /* ---- work log ---- */
 
 .log {
