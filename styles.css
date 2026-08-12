@@ -44,6 +44,16 @@ body {
   max-width: 46rem;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 6rem;
+  animation: fade-in 500ms ease both;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap { animation: none; }
 }
 
 /* ---- masthead ---- */
@@ -77,16 +87,32 @@ body {
 }
 
 .masthead-nav a {
+  position: relative;
   color: var(--muted);
   text-decoration: none;
-  border-bottom: 1px solid transparent;
   padding-bottom: 2px;
+  transition: color 200ms ease;
+}
+
+.masthead-nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 1px;
+  background: var(--signal);
+  transition: right 220ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .masthead-nav a:hover,
 .masthead-nav a:focus-visible {
   color: var(--ink);
-  border-bottom-color: var(--signal);
+}
+
+.masthead-nav a:hover::after,
+.masthead-nav a:focus-visible::after {
+  right: 0;
 }
 
 /* ---- hero ---- */
@@ -139,17 +165,22 @@ body {
   padding: 1.25rem 0 1.25rem 0.85rem;
   margin-left: -0.85rem;
   border-left: 2px solid transparent;
-  transition: border-left-color 120ms ease, padding-left 120ms ease;
+  transition: border-left-color 250ms cubic-bezier(0.34, 1.4, 0.64, 1),
+              padding-left 250ms cubic-bezier(0.34, 1.4, 0.64, 1),
+              background-color 250ms ease;
 }
 
 a.entry:hover,
 a.entry:focus-visible {
   border-left-color: var(--signal);
-  padding-left: 1.1rem;
+  padding-left: 1.2rem;
+  background-color: color-mix(in srgb, var(--signal) 5%, transparent);
 }
 
-a.entry:hover .entry-title {
+a.entry:hover .entry-title,
+a.entry:focus-visible .entry-title {
   color: var(--signal);
+  transition: color 150ms ease;
 }
 
 .entry-head {
@@ -248,7 +279,12 @@ a.entry:hover .entry-title {
   flex-wrap: wrap;
 }
 
-.footer a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--rule); }
+.footer a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: color 200ms ease, border-bottom-color 200ms ease;
+}
 .footer a:hover, .footer a:focus-visible { color: var(--ink); border-bottom-color: var(--signal); }
 
 :focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
