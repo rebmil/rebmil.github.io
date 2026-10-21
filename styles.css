@@ -224,6 +224,65 @@ a.entry:focus-visible .entry-title {
 
 .entry-pending .entry-title { color: var(--faint); }
 
+.dek + .log { margin-top: 2rem; }
+
+/* ---- race results (about page) ---- */
+
+.races {
+  list-style: none;
+  padding: 0 !important;
+  margin: 1rem 0 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.races li {
+  margin: 0 !important;
+  border-bottom: 1px solid var(--rule);
+}
+
+.races a {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 0.25rem 1.5rem;
+  padding: 0.85rem 0;
+  color: var(--ink) !important;
+  text-decoration: none !important;
+  transition: color 150ms ease;
+}
+
+.races a:hover .race-name,
+.races a:focus-visible .race-name { color: var(--signal); }
+
+.race-name { font-size: 1.05rem; }
+
+.race-time {
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.race-meta {
+  grid-column: 1 / -1;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.race-meta .tag { color: var(--signal); }
+
+.listen-links {
+  font-family: var(--mono);
+  font-size: 13px;
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
 /* ---- prose (memo pages) ---- */
 
 .prose { max-width: var(--measure); }
