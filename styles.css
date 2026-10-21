@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
 
 :root {
   --paper: #fafaf8;
@@ -11,6 +11,8 @@
   --serif: 'Newsreader', Georgia, serif;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
   --measure: 60ch;
+  --hand: 'Caveat', 'Bradley Hand', cursive;
+  --card: #f1f1ed;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +24,7 @@
     --rule: #2a2e35;
     --signal: #9aa8ee;
     --anomaly: #e0a44a;
+    --card: #1c1f24;
   }
 }
 
@@ -226,45 +229,120 @@ a.entry:focus-visible .entry-title {
 
 .dek + .log { margin-top: 2rem; }
 
-/* ---- race results (about page) ---- */
+/* ---- about page: notebook touches ---- */
 
-.races {
-  list-style: none;
-  padding: 0 !important;
-  margin: 1rem 0 1.25rem;
-  border-top: 1px solid var(--rule);
+.about-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin: 0 0 1rem;
 }
 
-.races li {
-  margin: 0 !important;
+.about-hero h1 { margin: 0; }
+
+.anchor-doodle {
+  width: 46px;
+  height: 56px;
+  color: var(--signal);
+  flex-shrink: 0;
+  transform-origin: 50% 8%;
+  animation: bob 4.5s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: rotate(-6deg) translateY(0); }
+  50% { transform: rotate(6deg) translateY(3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anchor-doodle { animation: none; }
+}
+
+.hello {
+  font-family: var(--hand);
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: var(--signal);
+  margin: 0 0 2rem !important;
+}
+
+/* handwritten margin notes: hang in the left gutter on wide screens, inline on narrow ones */
+.note-wrap { position: relative; }
+
+.margin-note {
+  font-family: var(--hand);
+  font-size: 1.25rem;
+  line-height: 1.1;
+  color: var(--signal);
+  display: block;
+  margin: 0 0 0.35rem;
+}
+
+@media (min-width: 62rem) {
+  .margin-note {
+    position: absolute;
+    right: calc(100% + 1.25rem);
+    top: 0.35rem;
+    width: 10rem;
+    white-space: nowrap;
+    text-align: right;
+    margin: 0;
+    transform: rotate(-4deg);
+  }
+  .margin-note::after { content: ' →'; }
+}
+
+/* terminal-style card */
+.term {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1rem 0 1.5rem;
+  background: var(--paper);
+}
+
+.term-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--card);
   border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--faint);
 }
 
-.races a {
+.term-head svg { width: 14px; height: 14px; color: var(--signal); }
+
+.term-row {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: baseline;
-  gap: 0.25rem 1.5rem;
-  padding: 0.85rem 0;
+  gap: 0.15rem 1rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--rule);
   color: var(--ink) !important;
   text-decoration: none !important;
-  transition: color 150ms ease;
+  transition: background-color 200ms ease;
 }
 
-.races a:hover .race-name,
-.races a:focus-visible .race-name { color: var(--signal); }
+.term-row:last-child { border-bottom: 0; }
 
-.race-name { font-size: 1.05rem; }
+a.term-row:hover,
+a.term-row:focus-visible { background: color-mix(in srgb, var(--signal) 6%, transparent); }
 
-.race-time {
+.term-row .race-name { font-size: 1.02rem; }
+
+.term-row .race-time {
   font-family: var(--mono);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 500;
-  letter-spacing: 0.02em;
   font-variant-numeric: tabular-nums;
 }
 
-.race-meta {
+.term-row .race-meta {
   grid-column: 1 / -1;
   font-family: var(--mono);
   font-size: 11px;
@@ -273,14 +351,48 @@ a.entry:focus-visible .entry-title {
   color: var(--faint);
 }
 
-.race-meta .tag { color: var(--signal); }
+.tag {
+  color: var(--signal);
+  border: 1px solid color-mix(in srgb, var(--signal) 40%, transparent);
+  border-radius: 999px;
+  padding: 0 0.45rem;
+  margin-left: 0.35rem;
+}
 
-.listen-links {
+/* link pills */
+.pills { display: grid; gap: 0.6rem; margin: 1rem 0 1.5rem; }
+
+.pill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  background: var(--card);
+  border-radius: 10px;
   font-family: var(--mono);
   font-size: 13px;
-  display: flex;
-  gap: 1.25rem;
-  flex-wrap: wrap;
+  color: var(--ink) !important;
+  text-decoration: none !important;
+  transition: transform 200ms cubic-bezier(0.34, 1.4, 0.64, 1), background-color 200ms ease;
+}
+
+.pill .pill-sub { color: var(--faint); margin-left: 0.5rem; }
+
+.pill svg { width: 15px; height: 15px; color: var(--faint); flex-shrink: 0; transition: color 200ms ease; }
+
+.pill:hover, .pill:focus-visible {
+  transform: translateX(3px);
+  background: color-mix(in srgb, var(--signal) 8%, var(--card));
+}
+
+.pill:hover svg, .pill:focus-visible svg { color: var(--signal); }
+
+.signoff {
+  font-family: var(--hand);
+  font-size: 1.35rem;
+  color: var(--muted);
+  margin: 0 0 0.5rem !important;
 }
 
 /* ---- prose (memo pages) ---- */
@@ -357,4 +469,5 @@ a.entry:focus-visible .entry-title {
 @media (max-width: 34rem) {
   body { font-size: 18px; }
   .entry-head { flex-direction: column; gap: 0.35rem; }
+  .hello { font-size: 1.45rem; }
 }
